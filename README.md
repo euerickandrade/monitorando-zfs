@@ -74,7 +74,7 @@ Reinicie o servico do Zabbix Agent no servidor
 
 `# systemctl restart zabbix-agent`  
 
-5 - Configure os templates abaixo no Host para ter o monitoramento ZFS.
+5 - Baixe, importe e configure os templates abaixo no Host para ter o monitoramento ZFS.
 
 Nomes:
 
