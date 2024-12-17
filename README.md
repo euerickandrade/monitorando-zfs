@@ -1,15 +1,10 @@
 # monitorando-zfs
 
 Autor: Erick Andrade  
-
 Instagram: @erickandrade_  
-
 Telegram: @erickandrade  
-
 Site: https://www.erickandrade.com.br/  
-
 E-mail: erick@erickandrade.com.br  
-
 Versão: 1.0  
 
 
