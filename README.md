@@ -17,7 +17,16 @@ Para ajuda no monitoramento do ambiente será utilizado o pacote zfsutils-linux,
 Documentação OpenZFS: (https://openzfs.github.io/)  
 Documentação ZFS: (https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html)](https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html)  
 
-Versão do Zabbix: 6.0 LTS e 7.0 LTS  
+**Versão do Zabbix**: 6.0 LTS e 7.0 LTS  
+**Versão do Debian e ProxmoxVE**: Debian 11, Debian 12 e ProxmoxVE 8.2.2
 
 # Nota
-**Apesar de funcionar perfeitamente, o projeto ainda não está finalizado com todas as funcionalidades que quero**
+**Apesar de funcionar perfeitamente, o projeto ainda não está finalizado com todas as funcionalidades que quero.**  
+
+1 - Confira se o pacote zfsutils-linux esta instalado, caso nao esteja faca a instalacao pois ele e necessario para a execucao do monitoramento.
+
+`# apt install zfsutils-linux`
+
+2 - Acesse o diretorio do Zabbix Agent e baixe o arquivo de configuração dos parametros.
+
+`# cd /etc/zabbix/zabbix_agentd.d`
