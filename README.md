@@ -35,20 +35,48 @@ Documentação ZFS: (https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-
 
 `# wget https://erickandrade.com.br/zabbix/monitoramento-zfs.conf`
 
-## Para ver o total de Leitura/Escrita das Operações e Largura de Banda da Leitura/Escrita de cada Pool, substitua o nome da Pool no campo "minhapool" dentro do arquivo monitoramento-zfs.conf.  
+**Para ver o total de Leitura/Escrita das Operações e Largura de Banda da Leitura/Escrita de cada Pool, substitua o nome da Pool no campo "minhapool" dentro do arquivo monitoramento-zfs.conf.**  
 
 3 - Defina o proprietario, grupo e o modo do arquivo userparams.
 
-`# chown root:zabbix monitoramento-zfs.conf`
-`# chmod 0440 monitoramento-zfs.conf`
+`# chown root:zabbix monitoramento-zfs.conf`  
 
-4 - Reinicie o servico do Zabbix Agent no servidor.
+`# chmod 0440 monitoramento-zfs.conf`  
 
-`# systemctl restart zabbix-agent`
+4 - Baixe e instale o Agent do Zabbix no Host que será monitorado.
 
-5 - Configure os templates abaixo no Host para ter o monitoramento ZFS
+Você precisa ter as informações da vesão do Linux/ProxmoxVE e Zabbix Server para instalar o agente correto. Em meu exemplo será o Debian 12 que roda no ProxmoxVE 8.2.2 e o Zabbix Server 7.0 LTS.
+
+Acesse o site do Zabbix e baixe a versão correta. (https://www.zabbix.com/br/download)
+
+Baixe o .deb  
+
+`# wget https://repo.zabbix.com/zabbix/7.0/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.0+debian12_all.deb`
+
+Instale o pacote  
+
+`# dpkg -i zabbix-release_latest_7.0+debian12_all.deb`
+
+Atualize o repositório do Linux  
+
+`# apt update`
+
+Instale o Zabbix Agent  
+
+`# apt install zabbix-agent`
+
+Edite o arquivo do Zabbix Agent para definir os parâmetros Server, ServerActive e Hostname  
+Adicione o IP do seu Servidor Zabbix e o nome do seu Host.
+
+`# nano /etc/zabbix/zabbix_agentd.conf` 
+
+Reinicie o servico do Zabbix Agent no servidor   
+
+`# systemctl restart zabbix-agent`  
+
+5 - Configure os templates abaixo no Host para ter o monitoramento ZFS.
 
 Nomes:
 
-  Linux by Zabbix agent
-  Monitoramento ZFS por Erick Andrade
+  Linux by Zabbix agent  
+  Monitoramento ZFS por Erick Andrade  
