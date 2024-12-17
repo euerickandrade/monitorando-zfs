@@ -33,7 +33,7 @@ Documentação ZFS: (https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-
 
 `# cd /etc/zabbix/zabbix_agentd.d`
 
-`# wget https://erickandrade.com.br/zabbix/monitoramento-zfs.conf`
+`# wget https://raw.githubusercontent.com/euerickandrade/monitorando-zfs/refs/heads/main/monitoramento-zfs.conf`
 
 **Para ver o total de Leitura/Escrita das Operações e Largura de Banda da Leitura/Escrita de cada Pool, substitua o nome da Pool no campo "minhapool" dentro do arquivo monitoramento-zfs.conf.**  
 
