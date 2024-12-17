@@ -19,4 +19,5 @@ Documentação ZFS: (https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-
 
 Versão do Zabbix: 6.0 LTS e 7.0 LTS  
 
+# Nota
 **Apesar de funcionar perfeitamente, o projeto ainda não está finalizado com todas as funcionalidades que quero**
