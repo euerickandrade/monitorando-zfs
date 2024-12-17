@@ -1,11 +1,17 @@
 # monitorando-zfs
 
-Autor: Erick Andrade
-Instagram: @erickandrade_
-Telegram: @erickandrade
-Site: https://www.erickandrade.com.br/
-E-mail: erick@erickandrade.com.br
-Versão: 1.0
+Autor: Erick Andrade  
+
+Instagram: @erickandrade_  
+
+Telegram: @erickandrade  
+
+Site: https://www.erickandrade.com.br/  
+
+E-mail: erick@erickandrade.com.br  
+
+Versão: 1.0  
+
 
 O Template serve para monitorar o status do ZFS em ambientes que usam distribuições GNU/Linux, inclusive o ProxmoxVE que por baixo está utilizando o Debian.
 
