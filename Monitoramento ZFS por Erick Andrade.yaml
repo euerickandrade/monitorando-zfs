@@ -1,0 +1,249 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 80e480b3df044ae8b64a3d1a16868498
+      name: 'Erick Andrade - Templates'
+  templates:
+    - uuid: 008724a7f35b4170bdd53db0a61948e7
+      template: 'Monitoramento ZFS por Erick Andrade'
+      name: 'Monitoramento ZFS por Erick Andrade'
+      description: |
+        Autor: Erick Andrade
+        Instagram: @erickandrade_
+        Telegram: @erickandrade
+        Site: https://www.erickandrade.com.br/
+        E-mail: erick@erickandrade.com.br
+        Versão: 2.0
+        
+        Versão do Zabbix: 6.0 LTS e 7.0 LTS
+        
+        O Template serve para monitorar o status do ZFS em ambientes que usam distribuições GNU/Linux, inclusive o ProxmoxVE que por baixo está utilizando o Debian.
+        
+        Outro parâmetro utilizado no template é que ele irá reportar o uso de Memória RAM feito pelo processo do ZFS.
+        
+        Para ajuda no monitoramento do ambiente será utilizado o pacote zfsutils-linux, para mais informações acesse a Documentação Oficial da ferramenta.
+        
+        Documentação OpenZFS: https://openzfs.github.io/
+        
+        Documentação ZFS: https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html
+        
+        Tutorial no blog: https://www.erickandrade.com.br/monitorando-zfs-em-ambiente-linux-com-zabbix/
+      groups:
+        - name: 'Erick Andrade - Templates'
+      items:
+        - uuid: e7cf7fd84cb240ff951d9d6e2d174495
+          name: 'Uso de RAM ZFS'
+          key: system.zfs.mempct
+          delay: 5m
+          history: 30d
+          trends: 90d
+          units: M
+          description: '#Descobrir o uso de Memória RAM feito pelo ARC do ZFS'
+          tags:
+            - tag: ZFS
+              value: RAM
+          triggers:
+            - uuid: ecb6cba2bcfd47bab1fbc43778711203
+              expression: 'min(/Monitoramento ZFS por Erick Andrade/system.zfs.mempct,240)>=8000'
+              name: 'Uso de RAM ARC ZFS no {HOST.NAME}  é >= 8 GB por mais de 2 horas'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: c5a0ddd449154a18907252a31d267c60
+          name: 'Uso do Pool ZFS em 75% ou mais'
+          key: zfs-userparams.pool.75deuso-quant
+          delay: 3m
+          trends: 90d
+          description: '#Listado por quantidade'
+          tags:
+            - tag: ZFS
+              value: 'Uso do Pool'
+          triggers:
+            - uuid: 1f3859f947994da6bb5bb2391f101d6b
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.75deuso-quant)>0'
+              name: 'Pool ZFS com 75% ou mais de uso em {HOST.NAME}'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 4a6c6077658240eba45627c4f51082e7
+          name: 'Saúde do Pool ZFS - DEGRADADO'
+          key: zfs-userparams.pool.degradado
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Ver se existe alguma Pool DEGRADADO, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Saúde do Pool'
+          triggers:
+            - uuid: 7a736f868a6048718b796bef00a9ab55
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.degradado)>0'
+              name: 'Pool ZFS em {HOST.NAME} está DEGRADADO'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 8e000df951204c0c8d4f309912a934c3
+          name: 'Status do Disco ZFS - ONLINE'
+          key: zfs-userparams.pool.disco.online
+          delay: 3m
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica o NOME e STATUS do Disco usado no Pool ZFS'
+          tags:
+            - tag: ZFS
+              value: 'Status do Disco'
+        - uuid: 86fb4cfc169942f5883f0153839421c8
+          name: 'Status do Disco ZFS - INDISPONÍVEL'
+          key: zfs-userparams.pool.disco.unavail
+          delay: 3m
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica o NOME e STATUS do Disco usado no Pool ZFS'
+          preprocessing:
+            - type: JAVASCRIPT
+              parameters:
+                - |
+                  // Captura a saída do item (como string)
+                  var output = value;
+                  
+                  // Divide a saída em linhas
+                  var lines = output.split("\n");
+                  
+                  // Ignora a primeira linha (cabeçalho)
+                  lines.shift();
+                  
+                  // Processa a segunda linha com os valores
+                  var data = lines[0].trim().split(/\s+/);
+                  
+                  // Retorna somente o NAME (primeiro campo)
+                  return data[0];
+          tags:
+            - tag: ZFS
+              value: 'Status do Disco'
+          triggers:
+            - uuid: 213cb1bf58c142bfb760455dcb470b15
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.disco.unavail)>=1'
+              name: 'O disco {$DISCO.01} do Pool ZFS INDISPONÍVEL no {HOST.NAME}'
+              priority: DISASTER
+              manual_close: 'YES'
+        - uuid: 47388c2736de40e8bc1c7abbe0ef10c8
+          name: 'Saúde do Pool ZFS - FALHOU'
+          key: zfs-userparams.pool.falhou
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Ver se existe alguma Pool FALHOU, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Saúde do Pool'
+          triggers:
+            - uuid: 04a1cca7e55c4e49bc25e7e75e6aadac
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.falhou)>0'
+              name: 'Pool ZFS em {HOST.NAME} está com FALHA'
+              priority: DISASTER
+              manual_close: 'YES'
+        - uuid: 21a4fb76a221429382dbb05a36116462
+          name: 'Saúde do Pool ZFS - INDISPONÍVEL'
+          key: zfs-userparams.pool.indisponivel
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Ver se existe alguma Pool INDISPONÍVEL, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Saúde do Pool'
+          triggers:
+            - uuid: 38e65924a35a464bbcedfb4b7f3fb0bd
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.indisponivel)>0'
+              name: 'Pool ZFS em {HOST.NAME} está INDISPONÍVEL'
+              priority: DISASTER
+              manual_close: 'YES'
+        - uuid: 1ea47e48aea746e1b6e6a91762057110
+          name: 'Saúde do Pool ZFS - OFFLINE'
+          key: zfs-userparams.pool.offline
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Ver se existe alguma Pool OFFLINE, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Saúde do Pool'
+          triggers:
+            - uuid: 7d17d7310f7646a489eaa258e0497c8f
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.offline)>0'
+              name: 'Pool ZFS em {HOST.NAME} está OFFLINE'
+              priority: DISASTER
+              manual_close: 'YES'
+        - uuid: c1859ed5c92e4741bfc899fe62acf262
+          name: 'Largura de Banda ZFS - Leitura'
+          key: zfs-userparams.pool.readbw
+          delay: 3m
+          history: 30d
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica a Leitura da Largura de Banda do ZFS'
+          tags:
+            - tag: ZFS
+              value: 'Lagura de Banda'
+        - uuid: 834374bb0fa34a578c1d38107d9d0ba9
+          name: 'Operações ZFS - Leitura'
+          key: zfs-userparams.pool.readops
+          delay: 3m
+          history: 30d
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica a Leitura do Operations do ZFS'
+          tags:
+            - tag: ZFS
+              value: Operacional
+        - uuid: 43946c2eab2e4f099709337463defb9b
+          name: 'Saúde do Pool ZFS - REMOVIDO'
+          key: zfs-userparams.pool.removido
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Ver se existe alguma Pool REMOVIDA, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Saúde do Pool'
+          triggers:
+            - uuid: db7b1112e4e94c9d8772715a0925d36c
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.removido)>0'
+              name: 'Pool ZFS REMOVIDO do {HOST.NAME}'
+              priority: AVERAGE
+              manual_close: 'YES'
+        - uuid: e3805a61e8704c6d8943a94f50e0671c
+          name: 'Total de Pools ZFS'
+          key: zfs-userparams.pool.totaldepools
+          delay: 3m
+          history: 30d
+          trends: 90d
+          description: '#Contar o Total de pools que existem no servidor'
+          tags:
+            - tag: ZFS
+              value: 'Total de Pools'
+          triggers:
+            - uuid: 467c8faecd6e4b69aad50f40b1226803
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.totaldepools)=0'
+              name: 'Nenhum dado de Pool ZFS em {HOST.NAME}'
+              priority: INFO
+              manual_close: 'YES'
+        - uuid: 03b344e6c3fc403f8f57c654779b4f55
+          name: 'Largura de Banda ZFS - Escrita'
+          key: zfs-userparams.pool.writebw
+          delay: 3m
+          history: 30d
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica a Escrita da Largura de Banda do ZFS'
+          tags:
+            - tag: ZFS
+              value: 'Lagura de Banda'
+        - uuid: 2797601910ff462a89d0c9552e09b702
+          name: 'Operações ZFS - Escrita'
+          key: zfs-userparams.pool.writeops
+          delay: 3m
+          history: 30d
+          value_type: TEXT
+          trends: '0'
+          description: '#Verifica a Escrita do Operations do ZFS'
+          tags:
+            - tag: ZFS
+              value: Operacional
