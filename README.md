@@ -14,8 +14,8 @@ Outro parâmetro utilizado no template é que ele irá reportar o uso de Memóri
 
 Para ajuda no monitoramento do ambiente será utilizado o pacote zfsutils-linux, para mais informações acesse a Documentação Oficial da ferramenta.
 
-[Documentação OpenZFS: ]((https://openzfs.github.io/))  
-[Documentação ZFS: ]([url aqui](https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html))  
+Documentação OpenZFS: (https://openzfs.github.io/) 
+Documentação ZFS: (https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html)](https://docs.oracle.com/cd/E24849_01/html/820-0447/zfsover-2.html) 
 
 
 Versão do Zabbix: 6.0 LTS e 7.0 LTS  
