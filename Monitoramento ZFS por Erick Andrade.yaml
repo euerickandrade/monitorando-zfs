@@ -209,6 +209,22 @@ zabbix_export:
               name: 'Pool ZFS REMOVIDO do {HOST.NAME}'
               priority: AVERAGE
               manual_close: 'YES'
+        - uuid: da9f9b7bb8bd487d8a17186819910164
+          name: 'Status do Disco ZFS - SUSPENSO'
+          key: zfs-userparams.pool.suspenso
+          delay: 3m
+          value_type: TEXT
+          trends: '0'
+          description: '#Ver se existe alguma Pool SUSPENSA, se o valor for maior que zero você receberá um alerta'
+          tags:
+            - tag: ZFS
+              value: 'Status do Disco'
+          triggers:
+            - uuid: 2881d15f9b0847e388f737cb040fe21e
+              expression: 'last(/Monitoramento ZFS por Erick Andrade/zfs-userparams.pool.suspenso)>0'
+              name: 'Pool ZFS em {HOST.NAME} está com SUSPENSA'
+              priority: DISASTER
+              manual_close: 'YES'
         - uuid: e3805a61e8704c6d8943a94f50e0671c
           name: 'Total de Pools ZFS'
           key: zfs-userparams.pool.totaldepools
